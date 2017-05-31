@@ -175,6 +175,22 @@ public class WinChecker implements Runnable{
         return flag;
     }
 
+    public boolean checkDraw(){
+        boolean flag = true;
+        for(Coin[] c : board){
+            for (Coin coin:c){
+                if(coin.getColor()==Color.WHITE){
+                    flag = true;
+                    break;
+                } else {
+                    flag = false;
+                }
+            }
+        }
+
+        return flag;
+    }
+
     @Override
     public void run() {
         while(true){
@@ -188,6 +204,12 @@ public class WinChecker implements Runnable{
 
             if (!CheckVertical(Color.YELLOW) || !CheckHorizontal(Color.YELLOW) || !CheckDiagonalBack(Color.YELLOW) || !CheckDiagonalForward(Color.YELLOW)) {
                 JOptionPane.showMessageDialog(null, "The Winner is Yellow");
+//                game.newGame();
+                System.exit(0);
+            }
+
+            if (!checkDraw()) {
+                JOptionPane.showMessageDialog(null, "Its a draw, you noobs");
 //                game.newGame();
                 System.exit(0);
             }

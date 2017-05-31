@@ -17,11 +17,11 @@ public class GUI extends JPanel {
         JFrame frame = new JFrame("Four in a TheGame");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setMinimumSize(new Dimension( 1200, 800));
-        frame.setExtendedState(frame.getExtendedState() | Frame.MAXIMIZED_BOTH);
         frame.getContentPane().add(game, BorderLayout.CENTER);
         frame.getContentPane().add(ChatWindow(), BorderLayout.WEST);
         frame.pack();
         frame.setVisible(true);
+        frame.setResizable(false);
     }
 
     private Component ChatWindow() {

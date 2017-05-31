@@ -5,7 +5,10 @@ import Multiplayer.Client;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Point2D;
@@ -44,14 +47,10 @@ public class TheGame extends JPanel implements Runnable, ActionListener {
                     for (Coin c : coins) {
                         if (c.getTempMidPoint().distance(worldPosition) < (diameter / 2)) {
                             for (int i = rows; i > 0; i--) {
-                                Coin tempCoin = board[c.getColumn()][i - 1];
-                                if (tempCoin.getColor() == Color.WHITE && me.getMyColor() != lastColor && SwingUtilities.isLeftMouseButton(e)) {
-                                    now = new Game.FallAnimation(tempCoin, me.getMyColor());
-                                    try {
-                                        me.myTurn(tempCoin.getColumn());
-                                    } catch (IOException ex) {
-                                        System.err.println(ex);
-                                    }
+                                if (board[c.getColumn()][i - 1].getColor() == Color.WHITE && me.getMyColor() != lastColor && SwingUtilities.isLeftMouseButton(e)) {
+                                    now = new Game.FallAnimation(board[c.getColumn()][i - 1], me.getMyColor());
+                                    me.myTurn(board[c.getColumn()][i - 1].getColumn());
+                                    me.setMyTurn(false);
                                     repaint();
                                     break;
                                 }
@@ -143,7 +142,7 @@ public class TheGame extends JPanel implements Runnable, ActionListener {
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
         Graphics2D g2d = (Graphics2D) g;
-        setBackground(new Color(103,250,166));
+        setBackground(new Color(103, 250, 166));
         g2d.setColor(Color.BLUE);
 
         int width = ((getHeight()) / columns - 1) * columns;

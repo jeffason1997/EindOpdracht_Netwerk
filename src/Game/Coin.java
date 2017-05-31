@@ -24,6 +24,10 @@ public class Coin {
         return radius;
     }
 
+    public void setRadius(double radius) {
+        this.radius = radius;
+    }
+
     public Color getColor() {
         return color;
     }

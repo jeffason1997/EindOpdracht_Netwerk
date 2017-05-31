@@ -19,28 +19,25 @@ public class Client implements Runnable, GameConstants {
     private Color otherColor = Color.BLACK;
     private DataInputStream fromServer;
     private DataOutputStream toServer;
-    private String host = "192.168.0.103";
     private boolean waiting = true;
     Game.TheGame game;
     Game.GUI gui;
     int player;
 
     public Client(String ip) {
-        connectToServer();
+        connectToServer(ip);
         game = new Game.TheGame(7);
         game.setClient(this);
-        host = ip;
     }
 
-    private void connectToServer() {
+    private void connectToServer(String ip) {
         try {
-            Socket socket = new Socket(host, 8080);
+            Socket socket = new Socket(ip, 8080);
 
             toServer = new DataOutputStream(socket.getOutputStream());
             fromServer = new DataInputStream(socket.getInputStream());
         } catch (Exception ex) {
             System.err.println(ex);
-            System.out.println("boiy");
         }
     }
 
@@ -88,8 +85,9 @@ public class Client implements Runnable, GameConstants {
 
 
     private void sendMove(int i) throws IOException {
-        toServer.writeInt(i);
-        myTurn = false;
+        if(myTurn) {
+            toServer.writeInt(i);
+        }
     }
 
 
@@ -109,9 +107,13 @@ public class Client implements Runnable, GameConstants {
     }
 
 
-    public void myTurn(int column) throws IOException {
+    public void myTurn(int column) {
         waiting = false;
-        sendMove(column);
+        try {
+            sendMove(column);
+        } catch (Exception e) {
+            System.err.println(e);
+        }
     }
 
     public boolean isMyTurn() {
